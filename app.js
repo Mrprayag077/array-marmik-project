@@ -1,10 +1,15 @@
+const http = require("http");
+const hostname = "0.0.0.0";
+
+
 const express = require("express");
 const fs = require("fs");
 const axios = require("axios");
 const multer = require("multer");
 const path = require("path");
 const app = express();
-const PORT = 3000;
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.use("/assests", express.static("assets"));
 app.use(
@@ -29,6 +34,7 @@ app.post("/upload", upload.single("image"), (req, res) => {
         // Read the uploaded image file
         const image = fs.readFileSync(req.file.path, { encoding: "base64" });
 
+        const name = req.body.name;
         // Make the Axios request to the detection API
         axios({
             method: "POST",
@@ -86,7 +92,7 @@ app.post("/upload", upload.single("image"), (req, res) => {
                 console.log("Number of WBCs:", wbcCount);
                 console.log("Number of Platelets:", plateletsCount);
 
-                res.render("result", { counts: numberOfObjects, rbcCount, wbcCount, plateletsCount });
+                res.render("result", { counts: numberOfObjects, rbcCount, wbcCount, plateletsCount, name });
 
             })
             .catch(function (error) {
@@ -99,6 +105,7 @@ app.post("/upload", upload.single("image"), (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT || 8000, function (req, res) {
+    console.log("MAIN UI: http://localhost:8000/");
 });
+
