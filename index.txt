@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing</title>
+</head>
+
+<body>
+    <h1>Image Processing</h1>
+    <form id="imageForm">
+        <input type="file" id="imageInput" accept="image/*">
+        <button type="submit">Process Image</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('imageForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const fileInput = document.getElementById('imageInput');
+
+            formData.append('imageData', fileInput.files[0]);
+
+
+            try {
+                const response = await fetch('/processImage', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                document.getElementById('output').innerText = data.processedData;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>

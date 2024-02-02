@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Detection</title>
+    <style>
+        body {
+            font-family: "Comic Sans MS", cursive;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #fafafa;
+            /* Warna latar belakang abu-abu muda */
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            width: 100%;
+            background-color: #f8f8f8;
+            /* Warna card */
+            padding: 20px;
+            border-radius: 12px;
+            /* Border radius card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #ddd;
+            /* Border color input */
+            border-radius: 8px;
+            /* Border radius input */
+            transition: border-color 0.3s ease-in-out;
+            outline: none;
+            color: #333;
+            background-color: #f4f4f4;
+            /* Warna input */
+        }
+
+        input:focus {
+            border-color: #ff9900;
+            /* Warna input saat focus */
+        }
+
+        button {
+            background-color: #ff9900;
+            /* Warna button */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            /* Border radius button */
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ff6600;
+            /* Warna button saat hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>ENTER DETAILS</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="name" id="name" name="name" placeholder="name" required>
+                <input type="number" id="mobile" name="mobile" placeholder="mobile" required>
+                <input type="file" id="image" name="image" accept="image/*" required>
+                <button type="submit">Upload Image</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+
+        uploadForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(uploadForm);
+
+            axios.post('http://localhost:4000/upload', formData, {
+                // headers: {
+                //     'Content-Type': 'multipart/form-data'
+                // }
+                // headers: {
+                //     "Content-Type": "application/x-www-form-urlencoded" // Use the fixed header
+                // }
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(function (response) {
+
+
+                const { counts } = response.data;
+                console.log("----------------------------------------------------");
+                console.log(response.data);
+
+                // Set counts in localStorage
+                // localStorage.setItem('numberOfObjects', counts);
+                // localStorage.setItem('numberOfObjects', counts); // Convert
+
+                // Redirect to the result.html page or perform other actions
+                // window.location.href = 'result.html';
+
+            }).catch(function (error) {
+                console.log(error.message);
+            });
+        });
+    </script>
+</body>
+
+</html>
